@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Task from "./component/Task";
 import { Center, Box, CheckboxGroup, Text } from "@chakra-ui/react";
+import axios from "axios";
 
 const App = () => {
   const initialTasks = [
@@ -20,14 +21,20 @@ const App = () => {
 
   const [tasks, setTasks] = useState([]);
 
+  const fetch = async () => {
+    const res = await axios.get("http://localhost:3010/tasks");
+    setTasks(res.data);
+    console.log(tasks);
+  };
+
   useEffect(() => {
-    setTasks(initialTasks);
+    fetch();
   }, []);
 
   const toggleIsDone = (index) => {
     const tasksCopy = [...tasks];
-    const isDone = tasksCopy[index].isDone;
-    tasksCopy[index].isDone = !isDone;
+    const isDone = tasksCopy[index].is_done;
+    tasksCopy[index].is_done = !isDone;
     setTasks(tasksCopy);
   };
 
@@ -47,7 +54,7 @@ const App = () => {
                   key={index}
                   index={index}
                   name={task.name}
-                  isDone={task.isDone}
+                  isDone={task.is_done}
                   toggleIsDone={toggleIsDone}
                 />
               );
