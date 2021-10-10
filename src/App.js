@@ -20,10 +20,13 @@ const App = () => {
     setTasks(res.data);
   };
 
-  const toggleIsDone = (index) => {
+  const toggleIsDone = async (id, index) => {
     const tasksCopy = [...tasks];
     const isDone = tasks[index].is_done;
     tasksCopy[index].is_done = !isDone;
+    await axios.put(`http://localhost:3010/tasks/${id}`, {
+      is_done: !isDone,
+    });
     setTasks(tasksCopy);
   };
 
